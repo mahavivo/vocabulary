@@ -87,7 +87,7 @@ print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + ", end" )
 
 all_text = all_text.replace('\n', '</br>')
 
-with open('trans_result.html', 'w', encoding='utf-8') as fin:
-    fin.write(all_text)
+with open('trans_result.html', 'w', encoding='utf-8') as fout:
+    fout.write(all_text)
 
 print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + ", wrote to file")
