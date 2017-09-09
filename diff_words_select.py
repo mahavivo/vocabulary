@@ -22,8 +22,8 @@ for x in diff_list:
 
 diff_dict =  dict((k, v) for v, k in temp_dict.items())
 
-# for k in sorted(d2.keys()):
-#     print(k, d2[k])
+# for k in sorted(diff_dict.keys()):
+#     print(k, diff_dict[k])
 
 for k in sorted(diff_dict.keys()):
     print(diff_dict[k])
