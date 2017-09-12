@@ -372,9 +372,9 @@ class AllText(object):
 def main():
     import time
     print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + ", begin to init")
-    allText = AllText(u'../tests/driveless.txt')
-    #allText = AllText(u'../tests/1342-0.txt')
-    #allText = AllText(u'../tests/pg1260.txt')
+    allText = AllText(u'tests/ShortHistory.txt')
+    #allText = AllText(u'tests/1342-0.txt')
+    #allText = AllText(u'tests/pg1260.txt')
     print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + ", start to get hard words")
     #hard_words = allText.get_hard_words(count=5000)
     hard_words = allText.get_hard_words(vocabulary=u'HIGHSCHOOL')
