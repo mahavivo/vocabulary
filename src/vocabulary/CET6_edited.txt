@@ -1272,7 +1272,7 @@ clergy
 clerk
 clerical
 clever
-clich®¶
+clich√©
 click
 client
 cliff
@@ -1723,7 +1723,7 @@ country
 countryside
 county
 coup
-coup d'®¶tat
+coup d'√©tat
 couple
 coupon
 courage
@@ -6131,7 +6131,7 @@ result
 resultant
 resume
 resumption
-r®¶sum®¶
+r√©sum√©
 retail
 retailer
 retain

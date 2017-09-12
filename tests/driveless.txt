@@ -1,0 +1,194 @@
+﻿The Driverless Economy
+Why robocars will be a bigger deal than you probably imagine
+
+Concept art of a city of the future.
+Since Google announced its first self-driving car prototypes back in 2012, people have been speculating how new technologies, AI, and automation may impact the global economy. Heck, some have even written entire books on this!
+It’s hard not to spend some time wondering what’s going to happen to the millions of truck and taxi drivers that are now roaming the streets, once this technological wonder becomes available to the masses. Will they all be out of a job? How are we to cope with such an event, especially at a time where governments are not exactly floating in cash — most are plagued by crippling national debt.
+I have long suggested that we should explore and experiment with Universal Basic Income as a means to potentially restructure our society and overcome the looming problem of technological unemployment. I am not alone in thinking this. Over the years, Silicon Valley billionaires and internet entrepreneurs like Elon Musk, Sam Altman, and Mark Zuckerberg have taken a similar position.
+When I first started giving lectures on this in 2012, audiences were split 90–10. The majority believed technological unemployment was a non-issue, which we could easily solve like we did with the past industrial revolutions.
+Today, the ratio is still 90–10, but reversed. I have a hard time finding techno-skeptics.
+However, while many have come around when it comes to the systematic loss of jobs, I find that:
+Most people don’t have a full grasp of the profound implications that an automated economy is going to bring. To explain it, perhaps there is no better and clearer example than autonomous vehicles.
+
+One of the first prototypes of self-driving car developed by Google.
+I will attempt to show how a single innovation is going to completely disrupt not one, but several industries, with non-obvious rippling effects in almost all facets of our daily lives.
+Note: for the sake of brevity, I’ll start referring to self-driving cars and the more general concept of autonomous vehicle — which includes cars, trucks, taxies, buses, vans, pods, trains, drones, and whatever comes next — as robocars. It’s shorter and gets the point across faster.
+Also, I think it sounds cooler.
+90% safer
+Robocars are filled with sensors. Different manufacturers use a combination of cameras, lasers, infrared, RADAR, LiDAR, ultrasonic, wheel speed sensors, passive visual, sonar, GPS, accelerometer, gyroscope, temperature, humidity, and a bunch more.
+Robocars can see and move around in rain, fog, and at night with no lights on. They can sense other robocars. They don’t need traffic lights. They can see 360° and be aware at all time of things we won’t ever be able to see.
+
+Nearly 1.3 million people die in road crashes each year, an average of 3,287 deaths a day. An additional 20–50 million are injured or disabled.
+Every. Single. Year.
+Robocars can easily bring that number down 90%, and in the long run I predict over 99% — a factor of 100. The reduction of car accidents brought by the introduction of fully autonomous will be even more dramatic and sudden than that of airplanes.
+
+In time, I predict that driving will become illegal, and be relegated to specific areas for driving enthusiasts. Just like hunting. A sport for the few.
+Robocars won’t even be built with a steering wheel, because it will be an obsolete piece of design that won’t serve any purpose. They will be redesigned from scratch, allowing us to do a variety of things inside, and become more like an extension of our homes.
+90% cheaper
+The biggest costs of cars are gas, insurance, maintenance, and—when you take a taxi—the driver.
+Robocars bring all of these costs down to practically zero.
+With 90% fewer accidents, insurance costs will drop 90% or more.
+Autonomous driving means you don’t need to pay for a human being behind the wheel, which is by far the biggest cost when one takes a taxi.
+Robocars will be electric, and if you create your own electricity using solar PV or other methods, the cost of taking a trip will be practically zero. Electricity generation from solar is now cheaper than coal and gas in many countries, and this trend will continue in the future, bringing the cost down exponentially.
+
+Credit: Ramez Naam.
+Electric cars are still not mainstream due to mainly two reasons: range and cost. Both are improving exponentially, thanks to better battery technology and car design.
+Robocars can leapfrog and overcome these obstacles much faster than normal electric cars would. An organized fleet of robocars can be incredibly efficient at organizing routes and switches. You will not need to plan for long trips, look at the available charging stations along the way, or remember to charge your car during the night.
+Robocars can do that automatically, so that you never have to think about it. Whether you have to do 10km or 10,000km, it doesn’t matter. It’s just something you will never be concerned with. A robocar will know which station to approach and at which time, it will come close to the appropriate replacement robocar whenever needed and open both doors for you. All you have to do is get out of one robocars and hop in the other every few hundred km. All in all, the process will take about 5 seconds, much less than would you’d need with any gasoline car and its refueling requirements.
+Electric cars are also more reliable and require less maintenance. They are much simpler, have fewer parts, and can do most of their diagnostics via software, which can be regularly updated and controlled remotely.
+Robocars don’t have to wait for electric vehicles to match the range of gasoline cars, or to even become as cheap.
+The combined benefits of better logistics and reduced maintenance can make cost and range anxiety obsolete problem.
+More flexible, more personalized
+Robocars will also adjust to the needs of the individual person. It’s estimated that most cars move around with a single person inside, a huge waste of space and resources.
+The average midsize car weighs 1,590 kilograms. The average human is 63kg. We essentially use a huge amount of energy to accelerate incredibly heavy objects, which take large amounts of space and weigh more than 20 times what they should be carrying.
+That’s insane.
+Aside from the failure to properly organize logistics with car pooling, the biggest issue is that we buy cars that are one-size fits all. We expect to be able to use them in cities, mountains, to bring kids to school, to go to work by ourselves, and to venture out for a weekend at the lake with friends. Also, we want to feel safe, so we buy increasingly bigger and more inefficient cars.
+This creates a vicious cycle.
+With robocars, we don’t need to buy one that fits all sizes and uses. We can just order the robocar we need, when we need it, at a fraction of the cost.
+For a trip alone, we could use single-occupant robocars, which are incredibly efficient and can zip around with ease anywhere in the city.
+
+Concept car by Toyota for a single occupant robocar.
+If we’re with a group of friends, we could share a small van.
+
+And if we like to travel in luxury, we can do that as well.
+
+In other words:
+Robocars can be much cheaper, reliable, flexible, and comfortable than regulars cars, even if they have higher upfront costs and can’t drive as far.
+They are better in every regard from day one.
+A lot better.
+90% faster
+One of the main reason robocars are not already roaming the streets is the same reason we have traffic jams. Streets are filled with stupid, reckless humans at the wheel of coffin-shaped metal boxes, whizzing about inefficiently and dangerously.
+
+We can’t even seem to manage to follow the simplest of rules, and we constantly cause unnecessary traffic jams and accidents. If we simply kept the proper distance between cars, we could get rid of phantom traffic jams, which are infesting our highways. But humans are generally stupid when it comes to driving, and half of us are filled with testosterone, so we don’t.
+A new study out of the University of Illinois at Urbana-Champaign suggests that the addition of just a small number of autonomous cars can ease the congestion on our roads. The presence of just one autonomous car reduces the standard deviation in speed of all the cars in the jam by around 50 percent, or a factor of 2.
+
+In this replication of a phantom traffic jam, just a single car with limited autonomy (the silver SUV) is enough to clear up congestion involving 20 other cars. (source)
+If all cars were autonomous, they could effectively communicate with each other, eliminate almost 100% of traffic jams, and always cruise at full speed, thus reducing commuting time by a factor of 10 at the very least.
+90% fewer cars
+Robocar rides will be cheap and ubiquitous. Unless you live in a remote, rural area, you will never need to buy a car. You might want to, but you won’t need to.
+In cities and towns, fleets of robocars will be constantly moving around, ready to pick up anyone in need. And because they are connected and can talk to each other at the speed of light, they can organize logistics much better than we ever can or will.
+
+A variety of advanced algorithms will optimize the number of cars required, predict flows, incoming demand, be linked to weather stations and sensors on the roads. IoT, Big Data, and Deep Learning will play a huge role in this, feeding each other in a virtuous cycle. More cheap and ubiquitous sensors around the cities means more and better quality data, which can train the algorithms to become more accurate.
+In time, people will realize that owning a car in cities is not a good thing, but a drag. The younger generation already realized this, and it’s relying more on car sharing and public transport. Robocars offer all the pros, and none of the cons. They will blow every other means of transportation out of the water.
+90% greener
+This is a no brainer. With 90% fewer cars on the road, it follows that there will be a significant reduction in emissions as well.
+However, the relationship might not be proportional. Because cars spend most of their time idle doing nothing, they’re wasting valuable space, but they’re not emitting anything while sitting there. Robocars, on the other hand, would be constantly moving people around to optimize use. This would increase emissions per car, but not per capita, it would roughly stay the same.
+Now let’s factor in the other variables. Because of the dramatic decrease in traffic, congestions, and the optimized routes, we should expect an improvement of at least 4x, perhaps even 10x.
+But we haven’t even scratched the surface.
+The biggest reduction in emissions will come from the switch to electric vehicles.
+Electric cars have virtually zero emissions, both of CO2 or harmful pollution, unless then one used to create them (which is more or less equivalent to that of regular cars).
+The combined effect of better logistics, the elimination of traffic jams and the switch to electric will bring emissions down 10–1000x.
+90% fewer parking spaces, 27% more free land area
+It’s estimated that in the US there are 8 parking spots for every car, covering up to 30% of our cities. Just let that sink in. Eight parking spaces for every single vehicle.
+
+This is an insane number, considering that for over 95% of the time cars are parked without doing anything at all. Robocars will eliminate the need for most parking spaces, and the few that remain can be used as temporary switch-locations.
+
+Banksy saw it right.
+This will free up to 27% of all land currently assigned for parking in cities, which we can finally turn into parks, making our cities more livable, beautiful, and healthy.
+Thanks to robocars, we can turn these:
+
+Into these:
+
+
+Let’s make our cities great again.
+Why we’ll see faster-than-ever adoption
+I’m an angel investor. I love startups, because they can solve big problems affecting hundreds of millions of people in just a few years. I invest in startups that have a great team, and can impact the greatest number of people positively in a short amount of time. Normal companies can’t do that.
+The secret ingredient is growth. A startup is a company that can grow and scale to a very large audience very quickly, and can do so consistently.
+Growth is fueled primarily by how big and how significant your key market differentiator is. The bigger the problem and the better the solution, the faster the growth. Startups are complicated beasts, but that’s really the essence. In short, we say:
+How much better is your product relative to the competition?
+If you provide a 10% improvement, you’ll probably never grow fast. Simple barriers to entry may be enough to discourage people to switch and begin using your product.
+If you offer a 90% improvement over the old technology, now we’re talking. That’s a 10x, which is often enough to have a clear key market differentiator and create entire new, billion-dollar markets. PayPal allowed users to send money across the world in minutes as opposed to days. That was easily a 100x improvement, and the company grew like crazy.
+Let’s have a look at how robocars play out in the startup equation:
+> 90% safer
+> 90% cheaper
+> 90% greener
+90% faster
+90% fewer cars
+90% fewer parking spaces
+= > 1,000,000x improvement
+Each of these individual reasons would be enough to justify a switch to robocars, because each is 10x better relative to the old technology. Put together:
+Robocars represent at least million fold improvement.
+If robocars are 90% safer, it means we can expect only 10% of the accidents than the past. In reality, as our algorithms and sensors become exponentially more accurate and we gather more data, experts project a 99% reduction or more. In a few of decades, death by automobile accidents could become as rare as being struck by lightening.
+These are all conservative estimates. I could pick almost any of the reasons described above and make a case as to why each represents really a 99% improvement — or a factor of 100 — and not a “mere” 90%.
+A million fold improvement is in fact conservative.
+Very conservative.
+What we can learn from history
+Think of the last time something like this happened.
+
+Horse Drawn Carriages in New York city, 1917. Source.
+100 years go we used horses to move around. Then the first commercial cars arrived. They didn’t go much faster than horses, but they were much easier to maintain (no manure to take care of), they could carry more people in a smaller space (an integrated system as opposite to having a separate carriage to attach), and could be left alone without having to constantly feed them (they primarily needed fuel, which could be put in when necessary).
+All in all, cars offered a 10–20x improvement over horses, yet the transition only took 20–30 years. Very soon, owning horses became a sport or a passion, not a means of transportation.
+
+Cars in the 1930s took over the cities.
+But perhaps the greatest advantage was that cars were an upgradable technology. If a new engine was invented, you could plug that in and get more power, ceteris paribus (leaving the rest unchanged). With horses, if you wanted more power, you had to purchase another horse and add it to the group, effectively doubling your spending, as well as your maintenance efforts and costs.
+Robocars can be streamlined, updated wirelessly, and they can drive themselves to the nearest maintenance center whenever needed. They offer a lot more advantages relative to cars than cars did relative to horses.
+A thought experiment
+Ask yourself this. You get a message from your friend to go to her place. She lives on the other side of town. Would you rather:
+
+Drive for more than an hour, be in agonizing traffic, spend $20 (all inclusive of insurance, gas, car usage), risk getting into an accident, only to spend another 10 minutes looking for parking and spending another $10?
+Or would you:
+
+Order a robocar, hop in, watch a YouTube video or take a nap in great comfort, have fun, be safe, and get out 10 minutes later, while spending $3 or less?
+                 🚗 CAR   🤖 ROBOCAR
+Time spent        1h30m        10m
+Comfort level      2/10       9/10
+Safety level       1/10       9/10
+Money spent         $30         $3
+100 years ago, cars represented a mere 10x-20 improvement over horses, yet they conquered the market in 2–3 decades.
+Robocars represent a million fold improvement over cars. How long will it take for them to replace all vehicles on the road?
+What do I mean by robocars
+SAE defines the levels of driving automation as follows:
+ 0    No Driving Automation   
+ 1    Driver Assistance
+ 2    Partial Driving Automation
+ 3    Conditional Driving Automation
+ 4    High Driving Automation
+ 5    Full Driving Automation
+I consider robocars to be level 5: full driving automation.
+Once car manufacturers and software companies fix the remaining technical issues (5 years give or take, Tesla is almost there already), regulation catches up (will taker a bit longer), and we adapt our infrastructure to accomodate them (a bit longer still), I predict most if not all new cars will be robocars.
+Once the first fully electric, fully autonomous robocar fleet enters the market, innovation will speed up, creating a virtuous cycle that will accelerate robocar adoption. At that point, there will be no point in building non-robocars, except for very niche markets (like sports).
+Here is another reason why it makes business sense.
+Robocars will double or triple the obtainable market
+The driver’s license is in decline, especially in the younger generation. Among teenagers, just 24.5 percent of 16-year-olds has a license, a 47-percent decrease from 1983, when 46.2 percent did.
+When asked why, people aged 18 to 39 said they were “too busy or not enough time to get a driver’s license” (37%), or that “owning and maintaining a vehicle is too expensive”(32%), or they were “able to get transportation from others” (31%).”
+Young people don’t like to get a driver’s license. We don’t like to own a car. We don’t want to maintain it. We want to move from point A to point B with the least amount of hassle and the most comfort. As public transportation became more ubiquitous, faster, and cheaper, we chose to use more of that. When Uber and other startups made it easier to take a taxi, we used more of those.
+When a new startup offers fully autonomous electric robocars, where the trips cost 10 times less, and are safer and more comfortable than regular old vehicles, the choice becomes pretty obvious.
+Companies that will fully embrace robocars as a service will quickly dominate the automotive market and create a trillion-dollar global industry.
+Robocars will allow not only adults without a license to move around, but also the elderly and people with disabilities. And why not, also children.
+The main reason parents don’t trust children to take public transportation is because they don’t feel it’s safe enough for them. While the vehicle itself may be relatively safe — at least as much as the car they drive — they don’t like the idea that their 6 year could be harassed by random strangers, or worse.
+With robocars, this concern becomes null. parents can call the robocar to their house and see their child get in. They can choose not to allow the car to pick anyone else up, and go directly to the school, football practice, or their friend’s house. They can track every movement on their smartphone, and even check how the kid’s doing from a security cam installed in the car, which will only turn on in certain circumstances, with the consent of the user, giving special access to parents with small children to monitor how they’re doing.
+Because the costs of running the car will drop exponentially, so might the margins for companies, one might think. But because we don’t need to pay attention to the street, we can do other things.
+I predict that in the future entertainment and third party services will become the most lucrative business in automotive.
+This will open up entire new markets, creating incentive for companies to join in the robocar ecosystem.
+Summary
+Robocars will make our street safer. With fewer accidents, they will save millions of lives every year from preventable deaths and injuries.
+They will make our cities greener. They will be fully electric, powered by renewable energies, and we’ll need less of them moving around.
+They will make us healthier. By reducing the need for parking, they will allow 27% of the space currently occupied in cities by parking and soulless concrete to become parks we can enjoy, taking walks and playing with friends, while breathing cleaner air.
+They will make transportation cheaper and more convenient.
+They will empower the disadvantaged, making personalized and ubiquitous transportation available to virtually everyone on Earth, including children, the elderly, the poor, and people with disabilities.
+They will save us time. Every year, billions of hours of cognitive potential is wasted in a mostly useless, tedious, and inefficient task. It will free our cognitive capacity to pursue greater things.
+Then again, if you really like driving and can’t do without it, you can always do it in VR while inside a robocar.
+What next?
+The advent of cars transformed our lives much more than people at the time could have anticipated. They transformed cities, gave birth to the suburbs, and engineered a social revolution. Their impact on society and the environment is so profound that it is difficult to comprehend what life was like before they came. We can get a glimpse from movies and books of the past. But really, we don’t know.
+So far, I only described the most obvious, and perhaps the most stupid ways robocars are going to change the way we live, because they are seen with the lenses of today.
+The real revolution will unfold in non-obvious ways, as emergent properties of a new complex system that we’ll put in place, which will create new possibilities and opportunities we probably can’t even think of now.
+
+For example, what happens when not only robocars become widespread, but when the entire transportation ecosystem around them also changes accordingly?
+Imagine this. You live in Rome. It’s a warm, sunny morning, you’re drinking a nice cappuccino at your house outside the city, when you get a call from a friend of yours living in Paris, he’s inviting you a party there. You request a robocar, and within 20 seconds it comes to pick you up.
+As you slide in and make yourself comfortable, the car already planned the entire journey, including the wireless charging routes to make sure it doesn’t need to stop at any point — unless you want to — along with the entertainment you like, a list of friends you might want to invite, and the work you wanted to catch up with before the end of the day.
+
+Concept station of Hyperloop Transportation Technologies.
+As you approach the main transportation hub, your robocar seamlessly enters inside a Hyperloop capsule, without reducing the current speed, sliding in one of the many evacuated tubes that connect to the larger hub. You accelerate to faster than the speed of sound, yet you don’t feel much different. You continue making videocalls, talking to friends, reading, and generally enjoying the trip. Less than an hour later you find yourself in front of your friend’s house in Paris, ready for the party.
+During this time, you didn’t have to deal with tolls or traffic. You didn’t have to get out of the car, charge it, speak to the police or show your passport. The robocar is equipped with with biometric identification, which you could also decide not to use it, if you want to.
+You remember back in the day, when going from one side of the city to the other — a mere 15 km — just to see your girlfriend, would sometimes take more than an hour, and how that over time took at toll on your relationship.
+Now, going to a city 1,500 km away seems like it’s around the corner. You can literally hop in, watch an episode of Game of Thrones, and you’re there.
+If this scenario seems too far fetched, it’s due a lack of imagination. As we speak, companies and startups are building each individual piece of technology to make this happen. The biggest obstacles remain laws and regulations, particularly the nonsensical security theatre around the so called “war on terror”.
+The future
+How will our lives change, once this becomes possible? Will we still decide to live in overcrowded cities, if we can get to any nearby point quickly, easily, hassle-free, and inexpensively?
+Perhaps we might see a new major shift in urbanization. As barriers to freely move are demolished, so will the need to squeeze in overcrowded, expensive and unhealthy city centers.
+Robocars might change the entire landscape of the world, how we build our homes and cities, how we live, and how we interact with one another.
+This is how a single technology can profoundly impact not just the automative industry, but the transportation sectors at large, the housing market, the job market, the entertainment industry, insurances, the communication sector, our laws regarding immigration, border control, our cities, our landscapes, and how it will empower entire segments of the population that currently don’t have the freedom to move.
+Just one technology.¹
+Now think of everything else that’s coming. Genetic engineering. Ubiquitous sensors. Internet of things. Artificial Intelligence. Nanotechnology.
+These are not just buzzwords. They are not far-away science fiction. They are very real, they’re coming, and they’re going to change our lives in ways we can’t even comprehend.
+The future awaits.

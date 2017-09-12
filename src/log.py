@@ -7,7 +7,7 @@ def log(logger_name):
     logger = logging.getLogger(logger_name)
     logger.setLevel(logging.DEBUG)
 
-    fh = logging.FileHandler('hard_word_trans.log')
+    fh = logging.FileHandler('auto_trans.log')
     fh.setLevel(logging.INFO)
 
     ch = logging.StreamHandler()
