@@ -257,7 +257,7 @@ class AllText(object):
         """
         toefl_words = set()
         try:
-            with open(u'vocabulary/WordList_TOFEL.txt', u'r', encoding=u'utf-8') as toefl:
+            with open(u'vocabulary/WordList_TOEFL.txt', u'r', encoding=u'utf-8') as toefl:
                 for w in toefl.readlines():
                     toefl_words.add(w.strip().lower())
         except Exception as exc:
@@ -303,10 +303,6 @@ class AllText(object):
                 pattern = re.compile(r'([ ,:\'\.\?!@;(])%s(([ ,:\'\.\?!@;)])|(\r)|(\n))' % w)
                 all_text_trans = pattern.sub(r'\1%s\2' % w_tran, all_text_trans)
 
-                w_tran = '<font color=red>' + w + '</font>' + '(<font color=blue size=-1>' + tran + '</font>)'
-                # 为避免误替换单词，被替换的单词前后必须有以下标点的任意一个:
-                # 空格,:.'?!@;()\r\n
-                # NOTE: 如果一个单词连续出现两次以上，则只会替换第一个
         all_text_trans = all_text_trans.replace(u'\n', u'</br>')
 
         with open(self.__file_path + u'-trans.html', u'w', encoding=u'utf-8') as fout:
@@ -394,4 +390,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
