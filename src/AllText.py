@@ -344,11 +344,11 @@ class AllText(object):
                 else:
                     org_word = rev_lemmas_dict.get(w)
                     if not org_word:
-                        words_trans[w] = u'No translation'
+                        logger.warning(u'%s, No translation' % w)
                     else:
                         org_trans = dictionary.get(org_word.lower())
                         if not org_trans:
-                            words_trans[w] = u'No translation'
+                            logger.warning(u'%s, No translation' % w)
                         else:
                             words_trans[w] = org_trans
         return words_trans
