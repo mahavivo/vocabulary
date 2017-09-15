@@ -9,18 +9,24 @@ import json
 from log import log
 logger = log(os.path.basename(sys.argv[0]))
 
-FINAL_FILE = 'lemmas/lemmas_final'
+FINAL_LEMMAS_FILE = u'lemmas/lemmas_final'
+FINAL_LEMMAS_JOSN_FILE = u'lemmas/lemmas_final.json'
+LEMMAS_QS_JSON_FILE = u'lemmas/lemmas_qs.json'
+LEMMAS_QS_EXTRA_JSON_FILE = u'lemmas/lemmas_qs_extra.json'
+REVERSE_LEMMAS_JSON_FILE = u'lemmas/rev_lemmas.json'
+
 
 """
-将多个渠道获取的lemmas文件合并，生成最终的lemmmas文件
+将多个渠道获取的lemmas文件合并，生成最终的 $FINAL_LEMMAS
+NOTE: 所有字母均转换为小写
 
-为方便比较、合并, 过程中将所有lemmas文件都转换成以下的字典格式:
+为方便比较、合并, 过程中将所有lemmas文件都转换成以下的字典格式，$FINAL_LEMMAS 也是这种格式:
 {
-    'he': {'frequency': 1196022, 'lemmas':['his', 'him', 'they']}
+    'he': ['his', 'him', 'they']
 }
 key是单词
-value也是字典,每个key是相关的属性,至少要有'lemmas'这个key,
-如果源文件包含其他属性,则创建新的key，加入value
+value是list, 内容是 除单词本身 以外的其他形式,
+注：忽略源文件中包含其他属性
 
 """
 
@@ -43,10 +49,12 @@ def parse_lemmas():
                 parts = line.split()
                 word = parts[0].lower()
                 if len(parts) > 1:
-                    lemmas_dict[word] = []
                     for i in range(1, len(parts)):
-                        if parts[i].lower() != parts[0]:
+                        if parts[i] and parts[i].lower() != parts[0]:
+                            if not isinstance(lemmas_dict.get(word), list):
+                                lemmas_dict[word] = []
                             lemmas_dict[word].append(parts[i].lower())
+
         message = 'OK'
     except Exception as exc:
         import traceback
@@ -74,10 +82,11 @@ def parse_bnc_lemmas():
             for index, line in enumerate(lemmas_file.readlines()):
                 parts = line.split()
                 word = parts[0].lower()
-                lemmas_dict[word] = []
                 if len(parts) > 2:
                     for i in range(2, len(parts)):
-                        if parts[i].lower() != parts[0]:
+                        if parts[i] and parts[i].lower() != parts[0]:
+                            if not isinstance(lemmas_dict.get(word), list):
+                                lemmas_dict[word] = []
                             lemmas_dict[word].append(parts[i].lower())
                 else:
                     logger.warning(u'Format is wrong in file AntBNC_lemmas_ver_001.txt, line: %d' % (index + 1))
@@ -112,12 +121,13 @@ def parse_e_lemmas():
                     parts = line.split()
                     word = parts[0].lower()
                     if len(parts) > 2:
-                        lemmas_dict[word] = []
                         # 文件中的lemmmas是以 , 分隔，故需要再split
                         final_parts = parts[2].split(u',')
                         for i in range(0, len(final_parts)):
-                            if final_parts[i].lower() != word:
-                                lemmas_dict[word].append(final_parts[i].lower())
+                            if final_parts[i] and final_parts[i].lower() != word:
+                                if not isinstance(lemmas_dict.get(word), list):
+                                    lemmas_dict[word] = []
+                                lemmas_dict[word].append(final_parts[i].lower().replace('.', '').replace('!', ''))
                     else:
                         logger.warning(u'Format is wrong in file e_lemma.txt, line: %d' % (index + 1))
         message = 'OK'
@@ -154,32 +164,35 @@ def compare_lemmas(base_lemmas, cmp_lemmas):
     diff_words = {}
     not_in_new_lemmas = {}
 
-    for word, info in base_lemmas.items():
-        if info:
+    for word, lemmas in base_lemmas.items():
+        if lemmas:
             if word in cmp_lemmas:
-                new_info = cmp_lemmas.get(word)
-                if new_info:
-                    a_lemmas = info
-                    a_new_lemmas = new_info
-                    if a_lemmas.sort() == a_new_lemmas.sort():
+                new_lemmas = cmp_lemmas.get(word)
+                if new_lemmas:
+                    lemmas.sort()
+                    new_lemmas.sort()
+                    if lemmas == new_lemmas:
                         same_count += 1
                     else:
-                        diff_words.setdefault(word, {'base_lemmmas': info, 'new_lemmas': new_info})
-                        if a_lemmas.sort() < a_new_lemmas.sort():
-                            not_in_new_lemmas.update(word, info)
+                        #diff_lemmas = set(new_lemmas).difference(set(lemmas))
+                        new_lemmas_set = set(new_lemmas)
+                        lemmas_set = set(lemmas)
+                        diff_lemmas = list(new_lemmas_set - lemmas_set)
+                        if diff_lemmas:
+                            #diff_words.setdefault(word, {'base_lemmmas': lemmas, 'new_lemmas': new_lemmas})
+                            diff_words.setdefault(word, {'diff_lemmas': diff_lemmas, 'base_lemmmas': lemmas, 'new_lemmas': new_lemmas})
                 else:
-                    not_in_new_lemmas.setdefault(word, info)
+                    not_in_new_lemmas.setdefault(word, lemmas)
             else:
-                not_in_new_lemmas.setdefault(word, info)
+                not_in_new_lemmas.setdefault(word, lemmas)
         else:
-            logger.warning(u'word: %s, no lemmas in base_lemmas' % word)
+            logger.error(u'word: %s, no lemmas in base_lemmas' % word)
     return same_count, diff_words, not_in_new_lemmas
 
-
 def merge_lemmas():
-    """将各个渠道的lemmas文件合并，生成
-        FINAL_FILE 每行单词以空格分隔，不会出现只有一个单词的行
-        FINAL_FILE+'.json' 与lemmas_final.txt内容相同，json格式存储
+    """将各个渠道的lemmas文件合并，生成$FINAL_LEMMAS
+    $FINAL_LEMMAS 用于后续生成 快速查询的lemmas 和 reverse lemmas
+    #2017.09.15 不再生成：每行单词以空格分隔，不会出现只有一个单词的行
     :return:
     """
     message = 'OK'
@@ -207,68 +220,70 @@ def merge_lemmas():
     print(u'AntBNC_lemmas_ver_001.txt total: %s' % len(bnc_lemmas))
     print(u'e_lemma.txt total: %s' % len(e_lemmas))
 
-    same_count, diff_words, not_in_new_lemmas = compare_lemmas(lemmas, bnc_lemmas)
-    if diff_words:
-        message = 'lemmas vs bnc_lemmas: diff_words is not null.'
-        return message
-    same_count, diff_words, not_in_new_lemmas = compare_lemmas(lemmas, e_lemmas)
-    if diff_words:
-        message = 'lemmas vs e_lemmas: diff_words is not null.'
-        return message
+    lemmas_to_file = {}
+    for word, lem in lemmas.items():
+        new_lem = set()
+        if isinstance(lem, list):
+            new_lem.update(lem)
+        if isinstance(bnc_lemmas.get(word), list):
+            new_lem.update(bnc_lemmas.get(word))
+        if isinstance(e_lemmas.get(word), list):
+            new_lem.update(e_lemmas.get(word))
+        final_lem = []
+        for le in new_lem:
+            if len(le) != 1:
+                final_lem.append(le)
+        lemmas_to_file.setdefault(word, final_lem)
 
-    same_count, diff_words, not_in_newlemmas_1 = compare_lemmas(bnc_lemmas, lemmas)
-    if not diff_words:
-        lemmas.update(not_in_newlemmas_1)
-    else:
-        print(diff_words)
-        message = 'Same word has different lemmas, "%s" vs "%s" ' % (bnc_lemmas, lemmas)
-        logger.error(message)
-        return message
-    updated_bnc_count = len(lemmas)
+    for word, lem in bnc_lemmas.items():
+        new_lem = set()
+        if isinstance(lem, list):
+            new_lem = set(lem)
+        if isinstance(lemmas.get(word), list):
+            new_lem.update(lemmas.get(word))
+        if isinstance(e_lemmas.get(word), list):
+            new_lem.update(e_lemmas.get(word))
+        final_lem = []
+        for le in new_lem:
+            if len(le) != 1:
+                final_lem.append(le)
+        lemmas_to_file.setdefault(word, final_lem)
 
-    same_count, diff_words, not_in_new_lemmas_2 = compare_lemmas(e_lemmas, lemmas)
-    if not diff_words:
-        lemmas.update(not_in_new_lemmas_2)
-    else:
-        print(diff_words)
-        message = 'Same word has different lemmas, "%s" vs "%s" ' % (bnc_lemmas, lemmas)
-        logger.error(message)
-        return message
-    updated_e_count = len(lemmas)
-    print(u'updated_bnc_count: %d' % updated_bnc_count, 'updated_e_count: %d' % updated_e_count)
+    for word, lem in e_lemmas.items():
+        new_lem = set()
+        if isinstance(lem, list):
+            new_lem = set(lem)
+        if isinstance(lemmas.get(word), list):
+            new_lem.update(lemmas.get(word))
+        if isinstance(bnc_lemmas.get(word), list):
+            new_lem.update(e_lemmas.get(word))
+        final_lem = []
+        for le in new_lem:
+            if len(le) != 1:
+                final_lem.append(le)
+        lemmas_to_file.setdefault(word, final_lem)
 
     # write to file
-    with open(FINAL_FILE, 'w', encoding=u'utf-8') as lemmas_new:
-        for word, value in lemmas.items():
+    with open(FINAL_LEMMAS_FILE, 'w', encoding=u'utf-8') as lemmas_new:
+        for word, value in lemmas_to_file.items():
             lemmas_new.write(word + ' ' + ' '.join(value) + '\n')
-        same_count, diff_words, not_in_new_lemmas_3 = compare_lemmas(not_in_new_lemmas_2, not_in_newlemmas_1)
-
-        str_lemmas = json.dumps(lemmas)
-        with open(FINAL_FILE+'.json', 'w', encoding=u'utf-8') as lemmas_josn:
-            lemmas_josn.write(str_lemmas)
-
-        if (len(not_in_new_lemmas_3) + updated_bnc_count) != updated_e_count:
-            message = "It seems to be some wrong in Merge lemms."
-            return message
+    with open(FINAL_LEMMAS_JOSN_FILE, 'w', encoding=u'utf-8') as lemmas_josn:
+        lemmas_josn.write(json.dumps(lemmas_to_file))
     return message
 
 def create_lemmas_dict():
+    """创建reverse lemmas
+    :return:
+    """
     message = u''
-    lemmas_dict= {}
     rev_lemmas_dict = {}
     try:
-        with open(u'lemmas/lemmas_final', u'r', encoding=u'utf-8') as lemmas_file:
-            temp_lemmas = lemmas_file.readlines()
-            for line in temp_lemmas:
-                parts = line.split()
-                lemmas_dict[parts[0].lower()] = []
-                for i in range(1, len(parts)):
-                    lemmas_dict[parts[0].lower()].append(parts[i].lower())
-                    rev_lemmas_dict[parts[i].lower()] = parts[0].lower()
-
-        with open(u'lemmas/lemmas_dict.json', u'w', encoding=u'utf-8') as lemmas_json:
-            lemmas_json.write(json.dumps(lemmas_dict))
-        with open(u'lemmas/rev_lemmas_dict.json', u'w', encoding=u'utf-8') as rev_lemmas_json:
+        with open(FINAL_LEMMAS_JOSN_FILE, u'r', encoding=u'utf-8') as lemmas_file:
+            final_lemmas = json.loads(lemmas_file.read())
+            for word, lemmas in final_lemmas.items():
+                for i in range(0, len(lemmas)):
+                    rev_lemmas_dict[lemmas[i]] = word
+        with open(REVERSE_LEMMAS_JSON_FILE, u'w', encoding=u'utf-8') as rev_lemmas_json:
             rev_lemmas_json.write(json.dumps(rev_lemmas_dict))
         message = u'OK'
     except Exception as exc:
@@ -302,21 +317,20 @@ def create_quick_search():
     lemmas_qs_extra = {}
     message = u''
     try:
-        with open(FINAL_FILE, 'r', encoding=u'utf-8') as lemmas_final_file:
-            for line in lemmas_final_file.readlines():
-                parts = line.split()
-                # merge_lemmas保证lemmas_final.txt 每行的单词至少有两个，故不判断parts的长度是否大于1
-                for i in range(1, len(parts)):
-                    if parts[i][0] != parts[0][0]:
-                        lemmas_qs_extra.setdefault(parts[0], parts[1:])
+        with open(FINAL_LEMMAS_JOSN_FILE, 'r', encoding=u'utf-8') as lemmas_file:
+            final_lemmas = json.loads(lemmas_file.read())
+            for word, lemmas in final_lemmas.items():
+                for i in range(0, len(lemmas)):
+                    if lemmas[i][0] != word[0]:
+                        lemmas_qs_extra.setdefault(word, lemmas)
                         break
-                if not lemmas_qs_extra.get(parts[0]):
-                    alpha_lemmas = lemmas_qs.setdefault(parts[0][0], {})
-                    alpha_lemmas[parts[0]] = parts[1:]
+                if not lemmas_qs_extra.get(word):
+                    alpha_lemmas = lemmas_qs.setdefault(word[0], {})
+                    alpha_lemmas[word] = lemmas
 
-        with open(u'lemmas/lemmas_qs.json', 'w', encoding=u'utf-8') as lemmas_qs_file:
+        with open(LEMMAS_QS_JSON_FILE, 'w', encoding=u'utf-8') as lemmas_qs_file:
             lemmas_qs_file.write(json.dumps(lemmas_qs))
-        with open(u'lemmas/lemmas_qs_extra.json', 'w', encoding=u'utf-8') as lemmas_qs_extra_file:
+        with open(LEMMAS_QS_EXTRA_JSON_FILE, 'w', encoding=u'utf-8') as lemmas_qs_extra_file:
             lemmas_qs_extra_file.write(json.dumps(lemmas_qs_extra))
         message = u'OK'
     except Exception as exc:
@@ -327,11 +341,11 @@ def create_quick_search():
 
 def test_lemmas_qs():
     lemmas_qs_all = {}
-    with open(FINAL_FILE+'.json', 'r', encoding=u'utf-8') as lemmas_final_json_file:
+    with open(FINAL_LEMMAS_JOSN_FILE, 'r', encoding=u'utf-8') as lemmas_final_json_file:
         lemmas_final_json = json.loads(lemmas_final_json_file.read())
-    with open(u'lemmas/lemmas_qs.json', 'r', encoding=u'utf-8') as lemmas_qs_file:
+    with open(LEMMAS_QS_JSON_FILE, 'r', encoding=u'utf-8') as lemmas_qs_file:
         lemmas_qs = json.loads(lemmas_qs_file.read())
-    with open(u'lemmas/lemmas_qs_extra.json', 'r', encoding=u'utf-8') as lemmas_qs_extra_file:
+    with open(LEMMAS_QS_EXTRA_JSON_FILE, 'r', encoding=u'utf-8') as lemmas_qs_extra_file:
         lemmas_qs_extra = json.loads(lemmas_qs_extra_file.read())
 
     for alpha_lemmas in lemmas_qs.values():

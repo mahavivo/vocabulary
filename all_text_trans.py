@@ -13,6 +13,10 @@ import traceback
 from log import log
 logger = log(os.path.basename(sys.argv[0]))
 
+LEMMAS_QS_JSON_FILE = u'lemmas/lemmas_qs.json'
+LEMMAS_QS_EXTRA_JSON_FILE = u'lemmas/lemmas_qs_extra.json'
+REVERSE_LEMMAS_JSON_FILE = u'lemmas/rev_lemmas.json'
+
 class AllText(object):
     def __init__(self, file_path):
         """
@@ -94,9 +98,9 @@ class AllText(object):
         :return: 单词均为小写
         """
         try:
-            with open(u'lemmas/lemmas_qs.json', u'r', encoding=u'utf-8') as lemmas_qs_file:
+            with open(LEMMAS_QS_JSON_FILE, u'r', encoding=u'utf-8') as lemmas_qs_file:
                 self.__lemmas_qs = json.loads(lemmas_qs_file.read())
-            with open(u'lemmas/lemmas_qs_extra.json', u'r', encoding=u'utf-8') as lemmas_qs_extra_file:
+            with open(LEMMAS_QS_EXTRA_JSON_FILE, u'r', encoding=u'utf-8') as lemmas_qs_extra_file:
                 self.__lemmas_qs_extra = json.loads(lemmas_qs_extra_file.read())
             return [self.get_base_word(word) for word in self.__lower_word]
         except Exception as exc:
@@ -215,7 +219,7 @@ class AllText(object):
         """
         simple_words = set()
         try:
-            with open(u'vocabulary/simple_words', u'r', encoding=u'utf-8') as simple:
+            with open(u'vocabulary/simple_words.txt', u'r', encoding=u'utf-8') as simple:
                 for w in simple.readlines():
                     simple_words.add(w.strip().lower())
         except Exception as exc:
@@ -257,7 +261,7 @@ class AllText(object):
         """
         toefl_words = set()
         try:
-            with open(u'vocabulary/WordList_TOFEL.txt', u'r', encoding=u'utf-8') as toefl:
+            with open(u'vocabulary/WordList_TOEFL.txt', u'r', encoding=u'utf-8') as toefl:
                 for w in toefl.readlines():
                     toefl_words.add(w.strip().lower())
         except Exception as exc:
@@ -282,8 +286,15 @@ class AllText(object):
         return gre_words
 
     def get_translated(self, words=[], frequency=0, vocabulary=u''):
+        """
+
+        :param words: 用户指定要翻译的单词表
+        :param frequency: 指定剔除 词频在frequency以内的单词
+        :param vocabulary: 指定 提出 某个词汇表，支持 'CET4'  'CET6' 'TOEFL' 'GRE'
+        :return:
+        """
         dictionary = self.__load_dictionary()
-        hard_words = set(words)
+        hard_words = set(words)   #
         if frequency:
             hard_words = hard_words.union(self.del_by_frq(frequency=frequency))
         elif vocabulary:
@@ -359,8 +370,9 @@ class AllText(object):
         """
         rev_lemmas_dict = {}
         message = u''
+
         try:
-            with open(u'lemmas/rev_lemmas_dict.json', u'r', encoding=u'utf-8') as rev_lemmas_dict_file:
+            with open(REVERSE_LEMMAS_JSON_FILE, u'r', encoding=u'utf-8') as rev_lemmas_dict_file:
                 rev_lemmas_dict = json.loads(rev_lemmas_dict_file.read())
             message = u'OK'
         except Exception as exc:
