@@ -21,7 +21,7 @@ class AllText(object):
     def __init__(self, file_path):
         """
         :param file_path:
-        
+
         生成以下私有变量：
         __file_path string, 输入的文件名
         __all_text  string. 全文
@@ -39,25 +39,64 @@ class AllText(object):
         try:
             with open(file_path, u'r', encoding=u'utf-8') as allText_file:
                 self.__file_path = file_path
+                # 将中文 单引号、双引号 替换为 相应的英文标点
+                self.__all_text = allText_file.read().replace(u"‘", u"'").replace(u'’', u"'").\
+                    replace(u'“', u'"').replace(u'”', u'"')
 
-                self.__all_text = allText_file.read()
-                word_list = re.split(r'\b([a-zA-Z]+-?[a-zA-Z]+)\b', self.__all_text)
-                self.__words = [word for word in word_list if re.match(r'^[a-zA-Z]+-?[a-zA-Z]+', word)]
+                self.__words = self.parse_text(self.__all_text)
                 self.__words_cnt = dict(collections.Counter(self.__words))
                 self.__words_distinct = set(self.__words)
 
-                lower_all_text = self.__all_text.lower()
-                word_lower_list = re.split(r'\b([a-zA-Z]+-?[a-zA-Z]+)\b', lower_all_text)
-                self.__lower_word = [word for word in word_lower_list if re.match(r'^[a-zA-Z]+-?[a-zA-Z]+', word)]
+                self.__lower_word = [word.lower() for word in self.__words]
                 self.__lower_words_cnt = dict(collections.Counter(self.__lower_word))
                 self.__lower_words_distinct = set(self.__lower_word)
-
-                #print(len(self.__words), len(self.__del_lemma_words))
-                #print(len(self.__words_distinct), len(self.__del_lemma_words_distinct))
-
         except Exception as exc:
             message = u'FAILED: Open "%s", exc:%r, detail: %s' % (file_path, exc, traceback.format_exc())
             logger.error(message)
+
+    def parse_text(self, text):
+        """根据输入的文本，返回解析后的单词列表
+        处理以下缩写：
+        n't  's  're   'd   've  'll
+        中文单引号、双引号
+        :param text:
+        :return:
+        """
+        # 先将标点符号替换为空格，除了 单引号。因为 部分单词的缩写会使用单引号，在后面进行处理
+        temp_words = text.replace(u'.', u' ').replace(u'?', u' ').replace('!', ' ').replace(u';', u' ').\
+            replace(u',', u' ').replace(u':', u' ').replace(u'(', u' ').replace(u')', u' ').replace(u'{', u' '). \
+            replace(u'}', u' ').replace(u'[', u' ').replace(u']', u' ').replace(u'_', u' ').replace(u'"', u' ').\
+            replace(u'-\r\n', u'-').replace(u'-\n', u'-').replace('—', ' ').replace('--', ' ').split()
+        short_words = [u"n't", u"'re", u"'s", u"'d", u"'ve", u"'ll"]
+        words = []
+        for w in temp_words:
+            w = w.replace(u' ', u'')
+            if w:
+                is_short = False
+                for s_w in short_words:
+                    if w.endswith(s_w):
+                        words.extend(self.__parse_no_short_words(w.split(s_w)[0]))
+                        words.append(s_w)
+                        is_short = True
+                        break
+                if not is_short:
+                    words.extend(self.__parse_no_short_words(w))
+        return words
+
+    def __parse_no_short_words(self, text):
+        """处理不含缩写的文本，返回解析后的单词列表
+        前面已经替换了除  '—' '--' "'" "’" 的标点
+        :param text:
+        :return:
+        """
+        words = []
+        if text and text[0].isalpha():
+            if text[-1] == '-':
+                text = text[:-1]
+
+            # 去除 非 字母和- 的字符
+            words.append(''.join([x for x in text if x.isalpha() or x == '-']))
+        return words
 
     def get_all_text(self):
         return self.__all_text
@@ -93,10 +132,12 @@ class AllText(object):
         return self.__lower_words_distinct
 
     def get_del_lemma_words(self):
-        """使用未经处理的原文单词列表
+        """使用文本的小写单词列表
         如果遇到异常，返回 原文单词列表 (or 终止 程序?)
         :return: 单词均为小写
         """
+        from lemmas import create_lemmas_file
+        create_lemmas_file()
         try:
             with open(LEMMAS_QS_JSON_FILE, u'r', encoding=u'utf-8') as lemmas_qs_file:
                 self.__lemmas_qs = json.loads(lemmas_qs_file.read())
@@ -104,7 +145,8 @@ class AllText(object):
                 self.__lemmas_qs_extra = json.loads(lemmas_qs_extra_file.read())
             return [self.get_base_word(word) for word in self.__lower_word]
         except Exception as exc:
-            message = u'FAILED: handle lemmms_qs.json/lemmas_qs_extra.json, exc:%r, detail: %s' % (exc, traceback.format_exc())
+            message = u'FAILED: handle lemmms_qs.json/lemmas_qs_extra.json, exc:%r, detail: %s' % (
+                exc, traceback.format_exc())
             logger.error(message)
             return self.__lower_word
 
@@ -125,21 +167,18 @@ class AllText(object):
         :param word:
         :return:
         """
-        alpha_lemmas = self.__lemmas_qs.get(word[0])
-
-        if word in alpha_lemmas:
-            # word is base_word
-            return word
-        else:
-            for base_word, a_lemmas in alpha_lemmas.items():
-                if a_lemmas and (word in a_lemmas):
+        if word:
+            alpha_lemmas = self.__lemmas_qs.get(word[0])
+            if word in alpha_lemmas:
+                # word is base_word
+                return word
+            else:
+                for base_word, a_lemmas in alpha_lemmas.items():
+                    if a_lemmas and (word in a_lemmas):
+                        return base_word
+            for base_word, a_lemmas in self.__lemmas_qs_extra.items():
+                if word in a_lemmas:
                     return base_word
-
-        for base_word, a_lemmas in self.__lemmas_qs_extra.items():
-            if word in a_lemmas:
-                return base_word
-
-        #logger.warning('word: "%s" is not in lemmas' % word)
         return word
 
     def get_hard_words(self, frequency=0, vocabulary=u'', del_lemmas=True):
@@ -154,8 +193,14 @@ class AllText(object):
             return set()
 
     def del_by_frq(self, frequency=0, del_lemmas=True):
-        """以去重、去lemmas的 __del_lemma_words_distinct 为基准，根据 词频表 移除单词后，再根据 简单词表 移除单词
-        NOTE: windows下文件另存为utf8，可能会在文件开始处多出BOM头EF BB，注意另存为 utf-8 无BOM头
+        """
+        如果 del_lemmas 为True：
+            以去重、去lemmas的 __del_lemma_words_distinct 为基准
+        否则：
+            将文本中去重后的小写单词作为基准
+        再：根据词频表 移除单词、根据简单词表 移除单词
+
+        NOTE: windows下文件另存为utf8，注意另存为 utf-8 无BOM头 格式，否则Windows会在文件开始处添加BOM头EF BB
         :param frequency: int
         :return: set
         """
@@ -221,7 +266,8 @@ class AllText(object):
         try:
             with open(u'vocabulary/simple_words.txt', u'r', encoding=u'utf-8') as simple:
                 for w in simple.readlines():
-                    simple_words.add(w.strip().lower())
+                    if not w.startswith('#'):
+                        simple_words.add(w.strip().lower())
         except Exception as exc:
             message = u'FAILED: handle FILE simple_words, exc:%r, detail: %s' % (exc, traceback.format_exc())
             logger.error(message)
@@ -267,7 +313,6 @@ class AllText(object):
         except Exception as exc:
             message = u'FAILED: handle File TOEFL, exc:%r, detail: %s' % (exc, traceback.format_exc())
             logger.error(message)
-        #print("TOEFL: %s" % len(toefl_words))
         return toefl_words
 
     def __load_gre_words(self):
@@ -282,36 +327,33 @@ class AllText(object):
         except Exception as exc:
             message = u'FAILED: handle File GRE, exc:%r, detail: %s' % (exc, traceback.format_exc())
             logger.error(message)
-        #print("GRE: %s" % len(gre_words))
         return gre_words
 
     def get_translated(self, words=[], frequency=0, vocabulary=u''):
         """
-
         :param words: 用户指定要翻译的单词表
         :param frequency: 指定剔除 词频在frequency以内的单词
         :param vocabulary: 指定 提出 某个词汇表，支持 'CET4'  'CET6' 'TOEFL' 'GRE'
         :return:
         """
-        dictionary = self.__load_dictionary()
-        hard_words = set(words)   #
+        hard_words = set(words)
         if frequency:
             hard_words = hard_words.union(self.del_by_frq(frequency=frequency))
         elif vocabulary:
             hard_words = hard_words.union(self.del_by_vocab(vocabulary=vocabulary))
         if hard_words:
-            words_trans = self.get_words_tans(hard_words, dictionary)
+            words_trans = self.get_words_tans(hard_words)
         else:
-            words_trans = self.get_words_tans(self.__lower_words_distinct, dictionary)
+            words_trans = self.get_words_tans(self.__words_distinct)
         all_text_trans = self.__all_text
         for w, tran in words_trans.items():
             if tran:
                 # 替换之外，给生词和翻译加上html格式
                 w_tran = u'<font color=red>' + w + '</font>' + '(<font color=blue size=-1>' + tran + '</font>)'
                 # 为避免误替换单词，被替换的单词前后必须有以下标点的任意一个:
-                # 空格,:.'?!@;()\r\n
+                # 空格,:.'"?!@;()\r\n
                 # NOTE: 如果一个单词连续出现两次以上，则只会替换第一个
-                pattern = re.compile(r'([ ,:\'\.\?!@;(])%s(([ ,:\'\.\?!@;)])|(\r)|(\n))' % w)
+                pattern = re.compile(r'([ ,:\'\"\.\?!@;(\n])%s([ ,:\'\"\.\?!@;)\n])' % w)
                 all_text_trans = pattern.sub(r'\1%s\2' % w_tran, all_text_trans)
 
         all_text_trans = all_text_trans.replace(u'\n', u'</br>')
@@ -333,23 +375,38 @@ class AllText(object):
                 dictionary[row[0].lower()] = row[1]
             return dictionary
 
-    def get_words_tans(self, words=[], dictionary={}):
+    def __get_orignal_words(self, words):
+        """根据 words 中传入的单词，查找原文的单词
+        :param words: list
+        :return:
+        """
+        orignal_words = set()
+        for w in self.__words:
+            if w in words:
+                orignal_words.add(w)
+            elif w.lower() in words:
+                orignal_words.add(w)
+        return orignal_words
+
+    def get_words_tans(self, words=[]):
         """如果单词没有解释，则查询其是否有原型单词，如有，使用其原型单词的解释
         :param words:
         :param dictionary:
         :return:
         """
+        dictionary = self.__load_dictionary()
+        words = self.__get_orignal_words(words)
         words_trans = {}
         get_lemmas_dict = self.__get_rev_lemmas()
         if get_lemmas_dict.get(u'message') == u'OK':
             rev_lemmas_dict = get_lemmas_dict.get(u'rev_lemmas_dict')
             for w in words:
-                w = w.lower()
-                trans = dictionary.get(w)
+                lower_w = w.lower()
+                trans = dictionary.get(lower_w)
                 if trans:
-                    words_trans[w] = dictionary.get(w)
+                    words_trans[w] = dictionary.get(lower_w)
                 else:
-                    org_word = rev_lemmas_dict.get(w)
+                    org_word = rev_lemmas_dict.get(lower_w)
                     if not org_word:
                         logger.warning(u'%s, No translation' % w)
                     else:
@@ -366,7 +423,6 @@ class AllText(object):
         """
         rev_lemmas_dict = {}
         message = u''
-
         try:
             with open(REVERSE_LEMMAS_JSON_FILE, u'r', encoding=u'utf-8') as rev_lemmas_dict_file:
                 rev_lemmas_dict = json.loads(rev_lemmas_dict_file.read())
@@ -380,9 +436,11 @@ class AllText(object):
 def main():
     import time
     print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + ", begin to init")
-    allText = AllText(u'tests/ShortHistory.txt')
+    #allText = AllText(u'tests/ShortHistory.txt')
     #allText = AllText(u'tests/1342-0.txt')
-    #allText = AllText(u'tests/pg1260.txt')
+    allText = AllText(u'tests/pg1260.txt')
+    #allText = AllText(u'tests/driveless.txt')
+    #allText = AllText(u'tests/test.txt')
     print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + ", start to get hard words")
     #hard_words = allText.get_hard_words(count=5000)
     hard_words = allText.get_hard_words(vocabulary=u'HIGHSCHOOL')
@@ -396,7 +454,8 @@ def main():
     print(hard_words)
 
     print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + ", begin to transalte")
-    #trans_allText = allText.get_translated(hard_words)
+    #trans_allText = allText.get_translated()
+    #trans_allText = allText.get_translated(vocabulary=u'CET6')
     trans_allText = allText.get_translated(vocabulary=u'GRE')
     print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + ", wrote to file")
 

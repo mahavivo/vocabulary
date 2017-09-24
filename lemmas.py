@@ -9,7 +9,7 @@ import json
 from log import log
 logger = log(os.path.basename(sys.argv[0]))
 
-FINAL_LEMMAS_FILE = u'lemmas/lemmas_final'
+FINAL_LEMMAS_FILE = u'lemmas/lemmas_final.txt'
 FINAL_LEMMAS_JOSN_FILE = u'lemmas/lemmas_final.json'
 LEMMAS_QS_JSON_FILE = u'lemmas/lemmas_qs.json'
 LEMMAS_QS_EXTRA_JSON_FILE = u'lemmas/lemmas_qs_extra.json'
@@ -190,9 +190,9 @@ def compare_lemmas(base_lemmas, cmp_lemmas):
     return same_count, diff_words, not_in_new_lemmas
 
 def merge_lemmas():
-    """将各个渠道的lemmas文件合并，生成$FINAL_LEMMAS
-    $FINAL_LEMMAS 用于后续生成 快速查询的lemmas 和 reverse lemmas
-    #2017.09.15 不再生成：每行单词以空格分隔，不会出现只有一个单词的行
+    """将各个渠道的lemmas文件合并，FINAL_LEMMAS_FILE
+    FINAL_LEMMAS_FILE 用于后续生成 JSON格式的文件、快速查询的lemmas 、 reverse lemmas
+    #2017.09.15 取消生成：每行单词以空格分隔，不会出现只有一个单词的行
     :return:
     """
     message = 'OK'
@@ -262,22 +262,24 @@ def merge_lemmas():
             if len(le) != 1:
                 final_lem.append(le)
         lemmas_to_file.setdefault(word, final_lem)
-
     # write to file
     with open(FINAL_LEMMAS_FILE, 'w', encoding=u'utf-8') as lemmas_new:
         for word, value in lemmas_to_file.items():
-            lemmas_new.write(word + ' ' + ' '.join(value) + '\n')
-    with open(FINAL_LEMMAS_JOSN_FILE, 'w', encoding=u'utf-8') as lemmas_josn:
-        lemmas_josn.write(json.dumps(lemmas_to_file))
+            lemmas_new.write(word + u' -> ' + ' '.join(value) + '\n')
+    with open(FINAL_LEMMAS_JOSN_FILE, 'w', encoding=u'utf-8') as lemmas_json:
+        lemmas_json.write(json.dumps(lemmas_to_file))
     return message
 
-def create_lemmas_dict():
+def create_reverse_lemmas():
     """创建reverse lemmas
     :return:
     """
     message = u''
     rev_lemmas_dict = {}
     try:
+        with open(FINAL_LEMMAS_FILE, 'r', encoding=u'utf-8') as lemmas_file:
+            lemmas_file.readlines()
+
         with open(FINAL_LEMMAS_JOSN_FILE, u'r', encoding=u'utf-8') as lemmas_file:
             final_lemmas = json.loads(lemmas_file.read())
             for word, lemmas in final_lemmas.items():
@@ -293,7 +295,7 @@ def create_lemmas_dict():
 
     return message
 
-def create_quick_search():
+def create_quick_search_lemmas():
     """将lemmas文件划分成以下两个文件，用于快速搜索：
     lemmas_qs_extra.txt 对lemmas_quick_search.txt 的补充：使用字典存储，任何一个lemma与单词的开头字母不同，存到这个文件中
         {
@@ -362,20 +364,38 @@ def test_lemmas_qs():
             if value != lemmas_final_json.get(key):
                 print(u'FAILED: %s, %s' % (value, lemmas_final_json.get(key)))
 
-def main():
+def create_lemmas_file(force_create=False):
+    """生成各种lemmas文件。
+    默认只有文件不存在的时候才生成，
+    也可以指定force_create 为True，强制生产
+    """
+    message = u'OK'
+    if force_create:
+        message = test_and_create()
+    else:
+        if not os.path.isfile(FINAL_LEMMAS_FILE) or not os.path.isfile(FINAL_LEMMAS_JOSN_FILE):
+            merge_lemmas()
+        if not os.path.isfile(LEMMAS_QS_JSON_FILE) or not os.path.isfile(LEMMAS_QS_EXTRA_JSON_FILE):
+            create_quick_search_lemmas()
+        if not os.path.isfile(REVERSE_LEMMAS_JSON_FILE):
+            create_reverse_lemmas()
+
+def test_and_create():
     message1 = merge_lemmas()
     if message1 == 'OK':
-        message2 = create_quick_search()
+        message2 = create_quick_search_lemmas()
         if message2 == "OK":
             test_lemmas_qs()
         else:
-            print(message2)
-
-        message3 = create_lemmas_dict()
+            logger.error(message2)
+        message3 = create_reverse_lemmas()
         if message3 != "OK":
-            print(message3)
+            logger.error(message3)
     else:
-        print(message1)
+        logger.error(message1)
+
+def main():
+    test_and_create()
 
 if __name__ == '__main__':
     main()
